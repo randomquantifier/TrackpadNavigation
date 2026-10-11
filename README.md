@@ -16,3 +16,10 @@ LÖVE 11 cannot always distinguish a physical mouse wheel from a trackpad. While
 ## Optional tuning
 
 The constants near the top of `Loenn/libraries/trackpad_navigation.lua` control pan speed, zoom sensitivity, and scale limits.
+
+## macOS keyboard compatibility
+
+The plugin also fixes Command shortcuts in Lönn text fields. 
+
+Command+A/C/X/V and Command+arrow/backspace work alongside their Control equivalents.   
+The default material-search shortcut is changed from Control+F to Command+F on macOS. 

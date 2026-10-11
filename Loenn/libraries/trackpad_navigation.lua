@@ -1,6 +1,8 @@
 local keyboardUtils = require("utils.keyboard")
 local menubar = require("ui.menubar")
 local persistence = require("persistence")
+local configs = require("configs")
+local uiElements = require("ui.elements.input")
 local viewportDevice = require("input_devices.viewport_device")
 local viewportHandler = require("viewport_handler")
 
@@ -106,7 +108,26 @@ local function installMenuItem()
     end
 end
 
+local function installMacKeyboardFixes()
+    if love.system.getOS() ~= "OS X" then
+        return
+    end
+
+    -- Lönn 0.0.0's text field checks love.system.getOS without calling it,
+    -- so the macOS branch is never selected. Accept both modifiers here.
+    uiElements.field.__default.hotkeyModifierHeld = function()
+        return keyboardUtils.modifierControl() or keyboardUtils.modifierGUI()
+    end
+
+    -- UI-specific hotkeys do not receive the macOS ctrl -> cmd conversion
+    -- used by Lönn's main hotkey defaults.
+    if configs.ui.hotkeys.focusMaterialSearch == "ctrl + f" then
+        configs.ui.hotkeys.focusMaterialSearch = "cmd + f"
+    end
+end
+
 installWheelHandler()
 installMenuItem()
+installMacKeyboardFixes()
 
 return trackpadNavigation
